@@ -9,11 +9,13 @@
     "timestamps": true
   },
   "attributes": {
-    "room": {
-      "collection": "room"
-    },
     "customer": {
       "model": "customer"
+    },
+    "reserved_room": {
+      "type": "component",
+      "repeatable": true,
+      "component": "reservation.reserved-room"
     }
   }
 }

@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_reservation_reserved_rooms",
+  "info": {
+    "name": "reserved room",
+    "icon": "book"
+  },
+  "options": {},
+  "attributes": {
+    "room": {
+      "model": "room"
+    },
+    "reserved_quantity": {
+      "type": "integer"
+    }
+  }
+}
