@@ -24,6 +24,9 @@
     },
     "available": {
       "type": "integer"
+    },
+    "quantity": {
+      "type": "integer"
     }
   }
 }
