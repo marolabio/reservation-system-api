@@ -22,7 +22,7 @@ module.exports = {
     await Promise.all(
       rooms.map(async (room) => {
         const currentRoom = await strapi.services.room.findOne({ id: room.id });
-        currentRoom.available = -room.quantity;
+        currentRoom.available = currentRoom.available - room.quantity; 
 
         return await strapi.services.room.update({ id: room.id }, currentRoom);
       })
