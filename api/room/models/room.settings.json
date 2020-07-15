@@ -2,7 +2,7 @@
   "kind": "collectionType",
   "collectionName": "rooms",
   "info": {
-    "name": "Rooms"
+    "name": "room"
   },
   "options": {
     "increments": true,

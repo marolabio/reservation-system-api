@@ -1,0 +1,19 @@
+{
+  "kind": "collectionType",
+  "collectionName": "reservations",
+  "info": {
+    "name": "reservation"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "room": {
+      "collection": "room"
+    },
+    "customer": {
+      "model": "customer"
+    }
+  }
+}

@@ -2,48 +2,48 @@
   "routes": [
     {
       "method": "GET",
-      "path": "/rooms",
-      "handler": "rooms.find",
+      "path": "/reservations",
+      "handler": "reservation.find",
       "config": {
         "policies": []
       }
     },
     {
       "method": "GET",
-      "path": "/rooms/count",
-      "handler": "rooms.count",
+      "path": "/reservations/count",
+      "handler": "reservation.count",
       "config": {
         "policies": []
       }
     },
     {
       "method": "GET",
-      "path": "/rooms/:id",
-      "handler": "rooms.findOne",
+      "path": "/reservations/:id",
+      "handler": "reservation.findOne",
       "config": {
         "policies": []
       }
     },
     {
       "method": "POST",
-      "path": "/rooms",
-      "handler": "rooms.create",
+      "path": "/reservations",
+      "handler": "reservation.create",
       "config": {
         "policies": []
       }
     },
     {
       "method": "PUT",
-      "path": "/rooms/:id",
-      "handler": "rooms.update",
+      "path": "/reservations/:id",
+      "handler": "reservation.update",
       "config": {
         "policies": []
       }
     },
     {
       "method": "DELETE",
-      "path": "/rooms/:id",
-      "handler": "rooms.delete",
+      "path": "/reservations/:id",
+      "handler": "reservation.delete",
       "config": {
         "policies": []
       }
