@@ -11,14 +11,15 @@
  */
 
 module.exports = async () => {
-  let io = await require("socket.io")(strapi.server);
+  process.nextTick(() => {
+    let io = require("socket.io")(strapi.server);
 
-  io.on("connection", function (socket) {
-    console.log("Client connected");
+    io.on("connection", function (socket) {
+      console.log("Client connected");
+   
+      socket.on("disconnect", () => console.log("Client disconnected"));
+    });
 
-    io.sockets.emit("hello", "hello socket");
-    socket.on("disconnect", () => console.log("Client disconnected"));
+    strapi.io = io;
   });
-
-  strapi.io = io;
 };

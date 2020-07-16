@@ -22,7 +22,7 @@ module.exports = {
     await Promise.all(
       rooms.map(async (room) => {
         const currentRoom = await strapi.services.room.findOne({ id: room.id });
-        currentRoom.available = currentRoom.available - room.quantity; 
+        currentRoom.available = currentRoom.available - room.quantity;
 
         return await strapi.services.room.update({ id: room.id }, currentRoom);
       })
@@ -43,6 +43,12 @@ module.exports = {
         reserved_quantity: room.quantity,
       })),
     });
+
+    // Socket io
+    strapi.io.emit(
+      "get_available_rooms",
+      await strapi.query("room").find({ available_gt: 0 })
+    );
 
     return sanitizeEntity(entity, { model: strapi.models.reservation });
   },

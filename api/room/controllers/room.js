@@ -1,8 +1,29 @@
-'use strict';
+"use strict";
 
 /**
  * Read the documentation (https://strapi.io/documentation/v3.x/concepts/controllers.html#core-controllers)
  * to customize this controller
  */
 
-module.exports = {};
+const { sanitizeEntity } = require("strapi-utils");
+
+module.exports = {
+  async find(ctx) {
+    let entities;
+    if (ctx.query._q) {
+      entities = await strapi.services.room.search(ctx.query);
+    } else {
+      entities = await strapi.services.room.find(ctx.query);
+    }
+
+    // Socket io
+    strapi.io.emit(
+      "get_available_rooms",
+      entities.filter((room) => room.available > 0)
+    );
+
+    return entities.map((entity) =>
+      sanitizeEntity(entity, { model: strapi.models.room })
+    );
+  },
+};
