@@ -16,6 +16,21 @@
       "type": "component",
       "repeatable": true,
       "component": "reservation.reserved-room"
+    },
+    "checkin": {
+      "type": "date"
+    },
+    "checkout": {
+      "type": "date"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "reserved",
+        "checkedin",
+        "checkedout"
+      ],
+      "default": "reserved"
     }
   }
 }

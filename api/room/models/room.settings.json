@@ -22,9 +22,6 @@
       "type": "decimal",
       "required": true
     },
-    "available": {
-      "type": "integer"
-    },
     "quantity": {
       "type": "integer"
     }

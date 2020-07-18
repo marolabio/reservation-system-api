@@ -9,24 +9,18 @@ const { sanitizeEntity } = require("strapi-utils");
 
 module.exports = {
   async create(ctx) {
-    const { firstName, lastName, email, rooms } = ctx.request.body;
-    const checkUnavailableRoom = await strapi
-      .query("room")
-      .count({ available_lte: 0, id_in: rooms.map((room) => room.id) });
+    const {
+      firstName,
+      lastName,
+      email,
+      rooms,
+      checkin,
+      checkout,
+      status,
+    } = ctx.request.body;
 
     // Validations
     if (rooms.length < 0) throw new Error("Rooms are required.");
-    if (checkUnavailableRoom !== 0) throw new Error("Unable to reserve.");
-
-    // Update room quantity
-    await Promise.all(
-      rooms.map(async (room) => {
-        const currentRoom = await strapi.services.room.findOne({ id: room.id });
-        currentRoom.available = currentRoom.available - room.quantity;
-
-        return await strapi.services.room.update({ id: room.id }, currentRoom);
-      })
-    );
 
     // Create customer
     const createdCustomer = await strapi.services.customer.create({
@@ -42,14 +36,30 @@ module.exports = {
         room: room.id,
         reserved_quantity: room.quantity,
       })),
+      checkin,
+      checkout,
+      status,
     });
 
     // Socket io
-    strapi.io.emit(
-      "get_available_rooms",
-      await strapi.query("room").find({ available_gt: 0 })
-    );
+    await strapi.services.reservation.updateSocket();
 
     return sanitizeEntity(entity, { model: strapi.models.reservation });
+  },
+
+  async find(ctx) {
+    let entities;
+    if (ctx.query._q) {
+      entities = await strapi.services.reservation.search(ctx.query);
+    } else {
+      entities = await strapi.services.reservation.find(ctx.query);
+    }
+
+    // Socket io
+    await strapi.services.reservation.updateSocket();
+
+    return entities.map((entity) =>
+      sanitizeEntity(entity, { model: strapi.models.reservation })
+    );
   },
 };
