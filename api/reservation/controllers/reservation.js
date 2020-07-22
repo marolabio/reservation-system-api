@@ -46,20 +46,4 @@ module.exports = {
 
     return sanitizeEntity(entity, { model: strapi.models.reservation });
   },
-
-  async find(ctx) {
-    let entities;
-    if (ctx.query._q) {
-      entities = await strapi.services.reservation.search(ctx.query);
-    } else {
-      entities = await strapi.services.reservation.find(ctx.query);
-    }
-
-    // Socket io
-    await strapi.services.reservation.updateSocket();
-
-    return entities.map((entity) =>
-      sanitizeEntity(entity, { model: strapi.models.reservation })
-    );
-  },
 };

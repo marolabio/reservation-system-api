@@ -12,7 +12,9 @@ module.exports = {
     const reservations = await strapi.query("reservation").find({
       status_ne: "checkedout",
     });
-    const reserved_rooms = flatMap(
+    const rooms = await strapi.query("room").find();
+
+    const reservedRooms = flatMap(
       reservations,
       ({ checkin, checkout, reserved_room }) => ({
         checkin,
@@ -24,6 +26,6 @@ module.exports = {
       })
     );
 
-    return strapi.io.emit("get_reserved_rooms", reserved_rooms);
+    return strapi.io.emit("get-reserved-rooms", { rooms, reservedRooms });
   },
 };

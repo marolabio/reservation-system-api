@@ -16,7 +16,11 @@ module.exports = async () => {
 
     io.on("connection", function (socket) {
       console.log("Client connected");
-   
+
+      socket.on("get-reserved-rooms", async () => {
+        await strapi.services.reservation.updateSocket();
+      });
+
       socket.on("disconnect", () => console.log("Client disconnected"));
     });
 
