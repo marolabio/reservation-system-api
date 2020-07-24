@@ -24,6 +24,9 @@
     },
     "quantity": {
       "type": "integer"
+    },
+    "occupancy": {
+      "type": "integer"
     }
   }
 }
