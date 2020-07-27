@@ -31,6 +31,12 @@
         "checkedout"
       ],
       "default": "reserved"
+    },
+    "children": {
+      "type": "integer"
+    },
+    "adult": {
+      "type": "integer"
     }
   }
 }

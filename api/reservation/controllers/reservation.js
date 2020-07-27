@@ -17,6 +17,8 @@ module.exports = {
       checkin,
       checkout,
       status,
+      adult, 
+      children
     } = ctx.request.body;
 
     // Validations
@@ -39,6 +41,8 @@ module.exports = {
       checkin,
       checkout,
       status,
+      adult, 
+      children
     });
 
     // Socket io
