@@ -8,13 +8,13 @@
 const flatMap = require("array.prototype.flatmap");
 
 module.exports = {
-  updateSocket: async () => {
+  updateSocket: async (reservationDetails) => {
     const reservations = await strapi.query("reservation").find({
       status_ne: "checkedout",
     });
     const rooms = await strapi.query("room").find();
 
-    const reservedRooms = flatMap(
+    let reservedRooms = flatMap(
       reservations,
       ({ checkin, checkout, reserved_room }) => ({
         checkin,
@@ -25,6 +25,11 @@ module.exports = {
         })),
       })
     );
+
+    if (reservationDetails) {
+      console.log("select-room-emitted", reservationDetails);
+      reservedRooms.push(reservationDetails);
+    }
 
     return strapi.io.emit("get-reserved-rooms", { rooms, reservedRooms });
   },

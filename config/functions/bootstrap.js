@@ -18,8 +18,15 @@ module.exports = async () => {
       console.log("Client connected");
 
       socket.on("get-reserved-rooms", async () => {
-        await strapi.services.reservation.updateSocket();
-       });
+        return await strapi.services.reservation.updateSocket();
+      });
+
+      socket.on("select-room", async (reservationDetails, callback) => {
+        callback();
+        return await strapi.services.reservation.updateSocket(
+          reservationDetails
+        );
+      });
 
       socket.on("disconnect", () => console.log("Client disconnected"));
     });
