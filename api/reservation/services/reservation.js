@@ -27,7 +27,7 @@ module.exports = {
     );
 
     if (reservationDetails) {
-      console.log("select-room-emitted", reservationDetails);
+      console.log("Client reservation details", reservationDetails);
       reservedRooms.push(reservationDetails);
     }
 
