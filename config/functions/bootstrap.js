@@ -62,13 +62,13 @@ module.exports = async () => {
           callback();
         }
 
-        socket.emit("get-reserved-rooms", { rooms, reservedRooms });
+        io.emit("get-reserved-rooms", { rooms, reservedRooms });
         console.log("Current reservations", getCurrentReservations(socket.id));
       });
 
       socket.on("change-room", () => {
         removeClientReservation(socket.id);
-        socket.emit("get-reserved-rooms", { rooms, reservedRooms });
+        io.emit("get-reserved-rooms", { rooms, reservedRooms });
       });
 
       socket.on("disconnect", () => {
