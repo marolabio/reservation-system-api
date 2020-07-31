@@ -45,9 +45,6 @@ module.exports = {
       children
     });
 
-    // Socket io
-    await strapi.services.reservation.updateSocket();
-
     return sanitizeEntity(entity, { model: strapi.models.reservation });
   },
 };
