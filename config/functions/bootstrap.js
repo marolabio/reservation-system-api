@@ -48,7 +48,8 @@ module.exports = async () => {
       reservedRooms = reservedRooms.filter(
         (reservation) => reservation.id !== id
       );
-      return id;
+
+      console.log(`Reservation ID: ${id} removed`);
     }
 
     io.on("connection", function (socket) {
@@ -65,12 +66,12 @@ module.exports = async () => {
         console.log("Current reservations", getCurrentReservations(socket.id));
       });
 
-      socket.on("disconnect", () => {
-        const removedReservationId = removeClientReservation(socket.id);
+      socket.on("change-room", () => {
+        removeClientReservation(socket.id);
+      });
 
-        if (removedReservationId) {
-          console.log(`Reservation ID: ${removedReservationId} removed`);
-        }
+      socket.on("disconnect", () => {
+        removeClientReservation(socket.id);
       });
     });
 
