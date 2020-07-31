@@ -68,6 +68,7 @@ module.exports = async () => {
 
       socket.on("change-room", () => {
         removeClientReservation(socket.id);
+        socket.emit("get-reserved-rooms", { rooms, reservedRooms });
       });
 
       socket.on("disconnect", () => {
