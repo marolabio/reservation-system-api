@@ -40,8 +40,8 @@ module.exports = async () => {
       return reservationDetails;
     }
 
-    function getCurrentReservation(id) {
-      return reservedRooms.find((reservation) => reservation.id === id);
+    function getCurrentReservations(id) {
+      return reservedRooms.filter((reservation) => reservation.id === id);
     }
 
     function removeClientReservation(id) {
@@ -54,12 +54,15 @@ module.exports = async () => {
     io.on("connection", function (socket) {
       console.log("Client connected");
 
-      socket.on("get-reserved-rooms", async (reservationDetails) => {
+      socket.on("get-reserved-rooms", async (reservationDetails, callback) => {
         // Reserve if has reservation details
-        reservationDetails && reserve({ id: socket.id, ...reservationDetails });
+        if (reservationDetails) {
+          reserve({ id: socket.id, ...reservationDetails });
+          callback();
+        }
 
         socket.emit("get-reserved-rooms", { rooms, reservedRooms });
-        console.log(getCurrentReservation(socket.id));
+        console.log("Current reservations", getCurrentReservations(socket.id));
       });
 
       socket.on("disconnect", () => {
