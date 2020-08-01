@@ -12,40 +12,18 @@
 
 const flatMap = require("array.prototype.flatmap");
 
-module.exports = async () => {
+module.exports = () => {
   process.nextTick(async () => {
     let io = require("socket.io")(strapi.server);
-
-    const reservations = await strapi.query("reservation").find({
-      status_ne: "checkedout",
-    });
-
-    const rooms = await strapi.query("room").find();
-
-    let reservedRooms = flatMap(
-      reservations,
-      ({ id, checkin, checkout, reserved_room }) => ({
-        id,
-        checkin,
-        checkout,
-        reserved_room: reserved_room.map((value) => ({
-          id: value.room.id,
-          quantity: parseInt(value.reserved_quantity),
-        })),
-      })
-    );
+    let clientReservations = [];
 
     function reserve(reservationDetails) {
-      reservedRooms.push(reservationDetails);
+      clientReservations.push(reservationDetails);
       return reservationDetails;
     }
 
-    function getCurrentReservations(id) {
-      return reservedRooms.filter((reservation) => reservation.id === id);
-    }
-
-    function removeClientReservation(id) {
-      reservedRooms = reservedRooms.filter(
+    function removeClientReservations(id) {
+      clientReservations = clientReservations.filter(
         (reservation) => reservation.id !== id
       );
 
@@ -56,23 +34,24 @@ module.exports = async () => {
       console.log("Client connected");
 
       socket.on("get-reserved-rooms", async (reservationDetails, callback) => {
-        // Reserve if has reservation details
+        const {
+          rooms,
+          reservedRooms,
+        } = await strapi.services.reservation.refetchReservedRoomsData();
+
         if (reservationDetails) {
           reserve({ id: socket.id, ...reservationDetails });
           callback();
         }
 
-        io.emit("get-reserved-rooms", { rooms, reservedRooms });
-        console.log("Current reservations", getCurrentReservations(socket.id));
-      });
-
-      socket.on("change-room", () => {
-        removeClientReservation(socket.id);
-        io.emit("get-reserved-rooms", { rooms, reservedRooms });
+        io.emit("get-reserved-rooms", {
+          rooms,
+          reservedRooms: [...clientReservations, ...reservedRooms],
+        });
       });
 
       socket.on("disconnect", () => {
-        removeClientReservation(socket.id);
+        removeClientReservations(socket.id);
       });
     });
 
