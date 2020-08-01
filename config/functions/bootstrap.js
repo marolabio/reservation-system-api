@@ -48,10 +48,14 @@ module.exports = () => {
           rooms,
           reservedRooms: [...clientReservations, ...reservedRooms],
         });
-      });
+        socket.on("remove-client-reservations", () => {
+          removeClientReservations(socket.id);
 
-      socket.on("remove-client-reservations", () => {
-        removeClientReservations(socket.id);
+          io.emit("reservations", {
+            rooms,
+            reservedRooms: [...clientReservations, ...reservedRooms],
+          });
+        });
       });
 
       socket.on("disconnect", () => {
