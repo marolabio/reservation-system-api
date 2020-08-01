@@ -33,7 +33,7 @@ module.exports = () => {
     io.on("connection", function (socket) {
       console.log("Client connected");
 
-      socket.on("get-reserved-rooms", async (reservationDetails, callback) => {
+      socket.on("reservations", async (reservationDetails, callback) => {
         const {
           rooms,
           reservedRooms,
@@ -44,10 +44,14 @@ module.exports = () => {
           callback();
         }
 
-        io.emit("get-reserved-rooms", {
+        io.emit("reservations", {
           rooms,
           reservedRooms: [...clientReservations, ...reservedRooms],
         });
+      });
+
+      socket.on("remove-client-reservations", () => {
+        removeClientReservations(socket.id);
       });
 
       socket.on("disconnect", () => {
