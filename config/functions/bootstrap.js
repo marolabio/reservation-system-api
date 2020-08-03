@@ -34,7 +34,7 @@ module.exports = () => {
       console.log("Client connected");
 
       socket.on("reservations", async (reservationDetails, callback) => {
-        const {
+        let {
           rooms,
           reservedRooms,
         } = await strapi.services.reservation.refetchReservedRoomsData();
@@ -48,6 +48,7 @@ module.exports = () => {
           rooms,
           reservedRooms: [...clientReservations, ...reservedRooms],
         });
+
         socket.on("remove-client-reservations", () => {
           removeClientReservations(socket.id);
 
