@@ -17,8 +17,9 @@ module.exports = {
       checkin,
       checkout,
       status,
-      adult, 
-      children
+      adult,
+      children,
+      contactNumber,
     } = ctx.request.body;
 
     // Validations
@@ -28,6 +29,7 @@ module.exports = {
     const createdCustomer = await strapi.services.customer.create({
       first_name: firstName,
       last_name: lastName,
+      contact_number: contactNumber,
       email,
     });
 
@@ -41,8 +43,8 @@ module.exports = {
       checkin,
       checkout,
       status,
-      adult, 
-      children
+      adult,
+      children,
     });
 
     return sanitizeEntity(entity, { model: strapi.models.reservation });

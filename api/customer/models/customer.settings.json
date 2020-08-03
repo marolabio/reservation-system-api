@@ -20,6 +20,9 @@
     "email": {
       "type": "email",
       "required": true
+    },
+    "contact_number": {
+      "type": "string"
     }
   }
 }
