@@ -48,14 +48,12 @@ module.exports = {
     });
 
     await strapi.plugins["email"].services.email.send({
-      to: "marolabio@gmail.com",
+      to: createdCustomer.email,
       from: "marolabio@gmail.com",
-      // cc: 'helenedarroze@strapi.io',
-      // bcc: 'ghislainearabian@strapi.io',
-      // replyTo: 'annesophiepic@strapi.io',
-      subject: "Use strapi email provider successfully",
-      text: "Hello world!",
-      html: "Hello world!",
+      subject: "Online reservation system",
+      text: "Reservation success!",
+      html: `<h1>Reservation success!</h1>
+      <p>Thank you for reserving with us ${createdCustomer.firstName}. Here is your transaction ID: ${entity.id}<p>`,
     });
 
     return sanitizeEntity(entity, { model: strapi.models.reservation });
