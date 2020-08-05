@@ -47,6 +47,17 @@ module.exports = {
       children,
     });
 
+    await strapi.plugins["email"].services.email.send({
+      to: "marolabio@gmail.com",
+      from: "marolabio@gmail.com",
+      // cc: 'helenedarroze@strapi.io',
+      // bcc: 'ghislainearabian@strapi.io',
+      // replyTo: 'annesophiepic@strapi.io',
+      subject: "Use strapi email provider successfully",
+      text: "Hello world!",
+      html: "Hello world!",
+    });
+
     return sanitizeEntity(entity, { model: strapi.models.reservation });
   },
 };
