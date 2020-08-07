@@ -47,14 +47,19 @@ module.exports = {
       children,
     });
 
-    await strapi.plugins["email"].services.email.send({
-      to: createdCustomer.email,
-      from: "marolabio@gmail.com",
-      subject: "Online reservation system",
-      text: "Reservation success!",
-      html: `<h1>Reservation success!</h1>
-      <p>Thank you for reserving with us ${createdCustomer.firstName}. Here is your transaction ID: ${entity.id}<p>`,
-    });
+    const env = strapi.config.get("server.NODE_ENV", "development");
+
+    console.log({ env });
+    if (env === "production") {
+      await strapi.plugins["email"].services.email.send({
+        to: createdCustomer.email,
+        from: "marolabio@gmail.com",
+        subject: "Online reservation system",
+        text: "Reservation success!",
+        html: `<h1>Reservation success!</h1>
+        <p>Thank you for reserving with us ${createdCustomer.firstName}. Here is your transaction ID: ${entity.id}<p>`,
+      });
+    }
 
     return sanitizeEntity(entity, { model: strapi.models.reservation });
   },
